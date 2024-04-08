@@ -45,7 +45,6 @@ ax[0].plot(
     linestyle='dotted'
 )
 ax[1].plot(df[df['year']>=2000]['year'], df[df['year']>=2000]['inflation'], label='инфляция')
-ax[1].set_yscale('log')
 ax[0].legend(loc='upper center')
 ax[1].legend()
 plt.show()
