@@ -34,17 +34,17 @@ ax[1].set_ylabel('Инфляция за год, д.е.', fontsize=16)
 ax[1].set_xlabel('Год', fontsize=16)
 ax[1].set_xticks(range(1991, 2024, 1))
 ax[1].set_xticklabels(range(1991, 2024, 1), rotation=90)
-ax[0].plot(df['year'], df['building'] / 1000, label='строительство')
-ax[0].plot(df['year'], df['production'] / 1000, label='обрабатывающие производства')
-ax[0].plot(df['year'], df['education'] / 1000, label='образование')
-ax[0].plot(df['year'], df['IT'] / 1000, label='информация и связь')
+ax[0].plot(df[df['year']>=2000]['year'], df[df['year']>=2000]['building'] / 1000, label='строительство')
+ax[0].plot(df[df['year']>=2000]['year'], df[df['year']>=2000]['production'] / 1000, label='обрабатывающие производства')
+ax[0].plot(df[df['year']>=2000]['year'], df[df['year']>=2000]['education'] / 1000, label='образование')
+ax[0].plot(df[df['year']>=2000]['year'], df[df['year']>=2000]['IT'] / 1000, label='информация и связь')
 ax[0].plot(
     df['year'],
     df['all_economic'] / 1000,
     label='в целом по стране',
     linestyle='dotted'
 )
-ax[1].plot(df['year'], df['inflation'], label='инфляция')
+ax[1].plot(df[df['year']>=2000]['year'], df[df['year']>=2000]['inflation'], label='инфляция')
 ax[1].set_yscale('log')
 ax[0].legend(loc='upper center')
 ax[1].legend()
