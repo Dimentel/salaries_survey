@@ -26,7 +26,7 @@ fig.suptitle(
 )
 ax[0].set_title('Номинальная начисленная средняя годовая заработная плата', fontsize=16)
 ax[0].grid(color='grey', linestyle='--')
-ax[1].set_title('Инфляция', fontsize=16)
+ax[1].set_title('Инфляция, %', fontsize=16)
 ax[1].grid(color='grey', which='both', linestyle='--')
 ax[0].set_ylabel('Номинальная заработная плата, тыс руб', fontsize=16)
 ax[0].set_yticks(range(0, 131, 10))
@@ -44,7 +44,7 @@ ax[0].plot(
     label='в целом по стране',
     linestyle='dotted'
 )
-ax[1].plot(df[df['year']>=2000]['year'], df[df['year']>=2000]['inflation'], label='инфляция')
+ax[1].plot(df[df['year']>=2000]['year'], (df[df['year']>=2000]['inflation'] - 1) * 100, label='инфляция')
 ax[0].legend(loc='upper center')
 ax[1].legend()
 plt.show()
