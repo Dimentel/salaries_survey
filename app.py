@@ -1,7 +1,6 @@
 # импортируем библиотеку streamlit
 import streamlit as st
 import pandas as pd
-import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
 
@@ -20,7 +19,7 @@ fig, ax = plt.subplots(ncols=1, nrows=2,
                        sharex=True,
                        gridspec_kw={'height_ratios': (.5, .5)}
                        )
-fig.layout='constrained'
+fig.layout = 'constrained'
 fig.suptitle(
     'Номинальная начисленная средняя годовая заработная плата и инфляция по различным видам деятельности',
     fontsize=20
@@ -30,18 +29,18 @@ ax[0].grid(color='grey', linestyle='--')
 ax[1].set_title('Инфляция', fontsize=16)
 ax[1].grid(color='grey', which='both', linestyle='--')
 ax[0].set_ylabel('Номинальная заработная плата, тыс руб', fontsize=16)
-ax[0].set_yticks(range(0,131,10))
+ax[0].set_yticks(range(0, 131, 10))
 ax[1].set_ylabel('Инфляция за год, д.е.', fontsize=16)
 ax[1].set_xlabel('Год', fontsize=16)
-ax[1].set_xticks(range(1991,2024,1))
-ax[1].set_xticklabels(range(1991,2024,1), rotation=90)
-ax[0].plot(df['year'], df['building']/1000, label='строительство')
-ax[0].plot(df['year'], df['production']/1000, label='обрабатывающие производства')
-ax[0].plot(df['year'], df['education']/1000, label='образование')
-ax[0].plot(df['year'], df['IT']/1000, label='информация и связь')
+ax[1].set_xticks(range(1991, 2024, 1))
+ax[1].set_xticklabels(range(1991, 2024, 1), rotation=90)
+ax[0].plot(df['year'], df['building'] / 1000, label='строительство')
+ax[0].plot(df['year'], df['production'] / 1000, label='обрабатывающие производства')
+ax[0].plot(df['year'], df['education'] / 1000, label='образование')
+ax[0].plot(df['year'], df['IT'] / 1000, label='информация и связь')
 ax[0].plot(
     df['year'],
-    df['all_economic']/1000,
+    df['all_economic'] / 1000,
     label='в целом по стране',
     linestyle='dotted'
 )
@@ -80,20 +79,20 @@ for area in ['all_economic', 'education', 'production', 'building', 'IT']:
     df[area + '_2024'] = df['inflation_koef'] * df[area]
 
 # Посмотрим изменение заработной с учётом инфляции во времени
-fig = plt.figure(figsize=(16,8))
+fig = plt.figure(figsize=(16, 8))
 plt.title('Начисленная средняя годовая заработная плата с учётом инфляции', fontsize=16)
 plt.grid(color='grey', linestyle='--')
 plt.xlabel('Год', fontsize=16)
 plt.ylabel('Заработная плата в ценах 2024 года, тыс руб', fontsize=16)
-plt.yticks(range(0,150,10))
-plt.xticks(range(2000,2024,1))
+plt.yticks(range(0, 150, 10))
+plt.xticks(range(2000, 2024, 1))
 plt.plot(df['year'], df['building_2024'] / 1000, label='строительство')
 plt.plot(df['year'], df['production_2024'] / 1000, label='обрабатывающие производства')
 plt.plot(df['year'], df['education_2024'] / 1000, label='образование')
 plt.plot(df['year'], df['IT_2024'] / 1000, label='информация и связь')
 plt.plot(df['year'], df['all_economic_2024'] / 1000,
          label='в целом по стране', linestyle='dotted'
-)
+         )
 plt.legend()
 plt.show()
 st.pyplot(fig)
@@ -109,7 +108,7 @@ st.markdown(
 
 st.subheader('ВВП, безработица и заработная плата')
 
-# приведём значения ВВП к 2024 году и округлим значения до 10 трлн руб для уменьшения количества различных значений
+# Приведём значения ВВП к 2024 году и округлим значения до 10 трлн руб. для уменьшения количества различных значений
 df['vvp_2024'] = round((df['vvp'] * df['inflation_koef']) / 1e13) * 10
 
 # уровень безработицы округлим до целого значения процентов
@@ -117,18 +116,16 @@ df['unemployment_rnd'] = round(100 * df['unemployment'])
 
 # Построим сводную таблицу
 avg_salary_pivot = df.pivot_table(index=['vvp_2024'], columns=['unemployment_rnd'],
-                                   values=['all_economic_2024'], aggfunc=['mean'])
+                                  values=['all_economic_2024'], aggfunc=['mean'])
 avg_salary_pivot = round(avg_salary_pivot)
 
 # Построим тепловую карту
 fig = plt.figure(figsize=(12, 8))  # задаём размер
 
 # строим тепловую карту
-plt.title('Заработная плата с учётом инфляции (в среднем по стране)',fontsize=16)
+plt.title('Заработная плата с учётом инфляции (в среднем по стране)', fontsize=16)
 sns.heatmap(
-    avg_salary_pivot.values[
-        ::-1
-    ],  # чтоб снизу были более низкие значения, изменим порядок строк
+    avg_salary_pivot.values[::-1],  # чтоб снизу были более низкие значения, изменим порядок строк
     xticklabels=[x[2] for x in avg_salary_pivot.columns],
     yticklabels=list(
         avg_salary_pivot.index[::-1]
